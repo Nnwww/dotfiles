@@ -1,0 +1,28 @@
+set hlsearch
+set ignorecase
+set smartcase
+set wrapscan
+set history=2000
+set clipboard=unnamed
+set number
+set showmode
+set matchpairs
+
+" :action {name}とつなぐことでintellij のActionを叩ける
+" nnoremap \r :action ReformatCode<CR>
+
+" escが遠いため
+inoremap <C-j> <Esc>
+noremap <silent> <C-j> <Esc>
+noremap! <silent> <C-j> <Esc>
+
+"x キー削除でデフォルトレジスタに入れない
+nnoremap x "_x
+vnoremap x "_x
+
+"ノーマルモード中にEnterで改行
+noremap <CR> i<CR><Esc>
+
+nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
+nnoremap <silent> <C-j><C-j> :<C-u>nohlsearch<CR>
+
