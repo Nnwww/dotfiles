@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<root>
+
+  <appdef>
+    <appname>Parallels</appname>
+    <equal>com.parallels.desktop.console</equal>
+  </appdef>
+
+  <appdef>
+    <appname>iterm2</appname>
+    <equal>com.googlecode.iterm2</equal>
+  </appdef>
+
+  <appdef>
+      <appname>macvim</appname>
+      <equal>org.vim.MacVim</equal>
+  </appdef>
+
+  <appdef>
+      <appname>gEmacs</appname>
+      <equal>org.gnu.Emacs</equal>
+  </appdef>
+
+  <appdef>
+      <appname>CLion</appname>
+      <equal>com.jetbrains.CLion</equal>
+  </appdef>
+
+  <appdef>
+      <appname>intellij</appname>
+      <equal>com.jetbrains.intellij</equal>
+  </appdef>
+
+  <appdef>
+      <appname>Firefox</appname>
+      <equal>org.mozilla.firefox</equal>
+  </appdef>
+
+  <appdef>
+      <appname>Eclipse</appname>
+      <equal>org.eclipse.platform.ide</equal>
+  </appdef>
+
+  <item>
+      <name>Ctrl_L to Cmd.app</name>
+      <identifier>private.app_csc</identifier>
+      <not>Parallels, iterm2, gEmacs, macvim, CLion, intellij, Firefox, Eclipse</not>
+      <autogen>__KeyToKey__ KeyCode::CONTROL_L, KeyCode::COMMAND_L</autogen>
+  </item>
+
+  <item>
+      <name>C-j to Esc.app</name>
+      <identifier>private.app_cjesc</identifier>
+      <only>Firefox,intellij,Eclipse</only> <!-- only 要素の値は、appname 要素の値を指定する -->
+      <autogen>
+          __KeyToKey__
+          KeyCode::J, ModifierFlag::CONTROL_L,
+          KeyCode::ESCAPE
+      </autogen>
+  </item>
+
+  <item>
+      <name>Leave Insert Mode with EISUU (vim keybind apps)</name>
+      <identifier>private.vim_keybind_apps_esc_with_eisuu</identifier>
+      <only>iterm2,TERMINAL,macvim,CLion,intellij,Eclipse</only>
+      <autogen>__KeyToKey__ KeyCode::ESCAPE, KeyCode::ESCAPE, KeyCode::JIS_EISUU</autogen>
+      <autogen>__KeyToKey__ KeyCode::J, VK_CONTROL, KeyCode::J, VK_CONTROL, KeyCode::JIS_EISUU</autogen>
+      <autogen>__KeyToKey__ KeyCode::JIS_BRACKET_LEFT, VK_CONTROL, KeyCode::JIS_BRACKET_LEFT, VK_CONTROL, KeyCode::JIS_EISUU</autogen>
+  </item>
+
+</root>
