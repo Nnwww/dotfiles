@@ -32,11 +32,12 @@ map g# <Plug>(incsearch-nohl-g#)
 
 " OCaml specific plugins driven ocp-indent-vim
 " The error occurs when merlin is loaded in ftplugin
-
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set runtimepath+=" . g:opamshare . "/ocp-index/vim"
-execute "set runtimepath+=" . g:opamshare . "/merlin/vim"
-let g:syntastic_ocaml_checkers = ['merlin']
+if executable('opam')
+  let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+  execute "set runtimepath+=" . g:opamshare . "/ocp-index/vim"
+  execute "set runtimepath+=" . g:opamshare . "/merlin/vim"
+  let g:syntastic_ocaml_checkers = ['merlin']
+endif
 
 " A setting for coexitence of deoplete with neocomplete
 if has('nvim')
@@ -50,26 +51,6 @@ else
   endif
   let g:neocomplete#force_omni_input_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
 endif
-" let s:hooks = neobundle#get_hooks("ocp-indent-vim")
-" function! s:hooks.on_source(bundle)
-"   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-"   execute "set runtimepath+=" . g:opamshare . "/ocp-index/vim"
-"   execute "set runtimepath+=" . g:opamshare . "/merlin/vim"
-"   let g:syntastic_ocaml_checkers = ['merlin']
-"
-"   " A setting for coexitence of deoplete with neocomplete
-"   if has('nvim')
-"     if !exists('g:deoplete#omni_patterns')
-"       let g:deoplete#omni_patterns = {}
-"     endif
-"     let g:deoplete#omni_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
-"   else
-"     if !exists('g:neocomplete#force_omni_input_patterns')
-"       let g:neocomplete#force_omni_input_patterns = {}
-"     endif
-"     let g:neocomplete#force_omni_input_patterns.ocaml = '[^. *\t]\.\w*\|\h\w*|#'
-"   endif
-" endfunction
 
 " Rust specific plugins driven vim-racer
 let s:hooks = neobundle#get_hooks("vim-racer")

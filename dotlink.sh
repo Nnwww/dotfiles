@@ -9,8 +9,14 @@ mkdir -p ~/.config/nvim 2>/dev/null
 ln -sf ~/dotfiles/vim/.vimrc ~/.config/nvim/init.vim
 ln -sf ~/dotfiles/vim/.vim ~/.config/nvim
 
-if [ ! `type nvim >/dev/null 2>&1` ]; then
+if type nvim >/dev/null 2>&1; then
+    if type python3 >/dev/null 2>&1; then
+        brew install python3
+        pip3 install --upgrade pip setuptools
+    fi
+    pip3 install neovim
     brew install neovim/neovim/neovim
+    echo "Execute the :UpdateRemotePlugins or :NeoBundleRemotePlugins (for using NeoBundle) in Neovim and restart it."
 fi
 
 mkdir -p ~/dotfiles/vim/.vim/bundle 2>/dev/null
@@ -29,8 +35,9 @@ if [ ! -e ~/.zplug ]; then
     git clone https://github.com/b4b4r07/zplug ~/.zplug
 fi
 
-if [ ! `type tmux >/dev/null 2>&1` ]; then
+if type tmux >/dev/null 2>&1; then
     brew install tmux
+    brew install reattach-to-user-namespace
 fi
 
 ln -sf ~/dotfiles/rcfiles/.tmux.conf ~/.tmux.conf
