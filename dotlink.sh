@@ -49,7 +49,7 @@ fi
 
 ln -sf ~/dotfiles/rcfiles/.tmux.conf ~/.tmux.conf
 
-ln -sf ~/dotfiles/rcfiles/.vimperatorrc ~/.vimperatorrc
+ln -sf ~/dotfiles/vimp/wasavi_ ~/.vimperatorc
 ln -sf ~/dotfiles/rcfiles/.ideavimrc ~/.ideavimrc
 
 exec $SHELL -l
