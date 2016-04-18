@@ -1,0 +1,79 @@
+"3.10.1 (created: 2015/08/25 00:41:59)
+
+source! /Users/nnwww/.vimperatorrc.local
+
+"set ft=vimperator:
+
+" アドオンインストール時の待ち時間カット
+set! security.dialog_enable_delay=0
+
+" j,kによる上下スクロールの移動量を5倍に設定
+noremap j 7<C-e>
+noremap k 7<C-y>
+
+" ビジュアルベルを表示しない
+set visualbell
+highlight Bell display:none
+
+" :oなどでの補完候補をサーチエンジン、履歴に限定
+set complete=sbl
+
+" Hintモードでアルファベット使用
+set hintchars=jfnvurhgytbkdmcielsxo
+
+" タブ移動
+nnoremap h <C-p>
+nnoremap l <C-n>
+
+" 横移動移動
+nnoremap H 6h
+nnoremap L 6l
+
+" タブの位置変更(タブ移動をスワップ)
+noremap <C-n> :tabmove! +1<CR>
+noremap <C-p> :tabmove! -1<CR>
+
+" undo一覧から開く
+nnoremap U :undo<Space>
+let g:hint_tombloo_key = 'r'
+
+" google検索を手早くする
+" (うっかりo twitter hogeで検索プロバイダがtwitterになるのでsにgoogle用を貼る)
+nnoremap s :tabopen<Space>google<Space>
+nnoremap S :open<Space>google<Space>
+
+" p(クリップボードの内容で検索)についてもgoogle指定
+nnoremap p :tabopen<Space>google<Space><M-v><CR>
+nnoremap P :open<Space>google<Space><M-v><CR>
+
+" fとFの機能を入れ替え
+no f F
+no F f
+
+" 選択文字列でぐぐる(マウスとVISUALモードの選択時に対応)
+nnoremap <C-s> <C-c>:tabopen<Space>google<Space><M-v><CR>
+vnoremap <C-s> <C-c><Esc><Esc>:tabopen<Space>google<Space><M-v><CR>
+
+" noh
+nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>
+nnoremap <silent> <C-[><C-[> :<C-u>nohlsearch<CR>
+
+"Backspaceを無効化
+map <BS> ""
+
+" R で.vimperatorrcを再読込み
+map R :source ~/.vimperatorrc<CR>
+
+" 入力欄に自動フォーカスしない
+set focuscontent
+
+" ステータスバーにページタイトル表示
+autocmd LocationChange .* -js statusline.updateField("title", "{" + buffer.title + "}")
+autocmd DOMLoad .* -js args.url == buffer.URL && statusline.updateField("title", "{" + buffer.title + "}")
+set status^=title
+" ステータスバーにタブグループ名表示
+autocmd LocationChange .* -js setTimeout(function () { statusline.updateField("tabgrouptitle", "<" + tabGroup.tabView.GroupItems.getActiveGroupItem().getTitle() + ">") }, 0);
+set status^=tabgrouptitle
+
+"読み込み完了メッセージ
+echo "vimperatorrc loaded."
