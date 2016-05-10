@@ -1,4 +1,3 @@
-
 let g:quickrun_config = get(g:, 'quickrun_config', {})
 let g:quickrun_config._ = {
       \ 'runner'    : 'vimproc',
@@ -10,13 +9,31 @@ let g:quickrun_config._ = {
       \ 'outputter/buffer/close_on_empty' : 1,
       \ }
 
+" Typing q close quickfix
+au FileType qf nnoremap <silent><buffer>q :quit<CR>
 
-" <C-c> で実行を強制終了させる
-" quickrun.vim が実行していない場合には <C-c> を呼び出す
-nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
-" \r でquickfixを閉じて、保存してからquickrunを実行する
+" Typing \r close quickfix and save a file, then execute quickrun.
 let g:quickrun_no_default_key_mappings = 1
 nnoremap \r :cclose<CR>:write<CR>:QuickRun -mode n<CR>
 xnoremap \r :<C-U>cclose<CR>:write<CR>gv:QuickRun -mode v<CR>
-" qでquickfixを閉じる
-au FileType qf nnoremap <silent><buffer>q :quit<CR>
+
+" Typing <C-c> stop quickrun.
+nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_sessions() : "\<C-c>"
+
+" watchdogs.vim setting
+let g:watchdogs_check_BufWritePost_enable = 1
+
+" watchdogs hook
+let g:quickrun_config["watchdogs_checker/_"] = {
+      \ "outputter/quickfix/open_cmd" : "",
+      \ "hook/qfstatusline_update/enable_exit" : 1,
+      \ "hook/qfstatusline_update/priority_exit" : 4,
+      \ 'hook/qfsigns_update/enable_exit':   1,
+      \ 'hook/qfsigns_update/priority_exit': 3,
+      \ }
+
+let g:quickrun_config["haskell/watchdogs_checker"] = {
+      \ "type" : "watchdogs_checker/ghc-mod",
+      \ }
+
+call watchdogs#setup(g:quickrun_config)

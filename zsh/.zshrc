@@ -49,8 +49,15 @@ fi
 zplug load --verbose
 
 alias nv=nvim
+alias rm=rmtrash
 
 if [ -z $TMUX ]; then
     tmux -2
 fi
 
+# OPAM configuration
+. /Users/Oh/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+
+alias pipu="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
+alias pip2u="pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U"
+alias pip3u="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U"

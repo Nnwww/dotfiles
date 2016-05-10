@@ -26,6 +26,7 @@ set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
+" defalut indents
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
@@ -65,3 +66,4 @@ autocmd BufWritePre * call <SID>remove_dust()
 " 全角スペース表示
 Autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGray guibg=DarkGray
 Autocmd VimEnter,WinEnter * match IdeographicSpace /　/
+

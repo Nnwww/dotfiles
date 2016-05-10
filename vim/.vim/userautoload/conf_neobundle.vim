@@ -29,17 +29,6 @@ NeoBundle 'Shougo/vimproc.vim', {
 
 NeoBundle 'thinca/vim-quickrun'
 
-" markdown
-NeoBundle 'godlygeek/tabular'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundleLazy 'plasticboy/vim-markdown',  {"autoload" : { "filetypes" : [ "markdown" ] }}
-NeoBundleLazy 'kannokanno/previm',  {"autoload" : { "filetypes" : [ "markdown" ] }}
-
-" Org-mode
-
-NeoBundle 'tpope/vim-speeddating'
-NeoBundle 'jceb/vim-orgmode'
-
 " colorscheme
 NeoBundle 'w0ng/vim-hybrid'
 
@@ -79,10 +68,23 @@ NeoBundle 'haya14busa/incsearch-fuzzy.vim'
 " common uses
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'sudo.vim'
-NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'Konfekt/FastFold'
 
+NeoBundle "osyo-manga/shabadou.vim"
+NeoBundle "dannyob/quickfixstatus"
+NeoBundle "osyo-manga/vim-watchdogs"
+NeoBundle "cohama/vim-hier"
+
+" markdown
+NeoBundle 'godlygeek/tabular'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundleLazy 'plasticboy/vim-markdown',  {"autoload" : { "filetypes" : [ "markdown" ] }}
+NeoBundleLazy 'kannokanno/previm',  {"autoload" : { "filetypes" : [ "markdown" ] }}
+
+" Org-mode
+NeoBundle 'tpope/vim-speeddating'
+NeoBundle 'jceb/vim-orgmode'
 
 " OCaml
 "NeoBundleLazy 'def-lkb/ocp-indent-vim',  {"autoload" : { "filetypes" : [ "ocaml" ] }}
@@ -92,7 +94,13 @@ NeoBundle 'def-lkb/ocp-indent-vim'
 " Syntax plugins don't be lazy, because it's not then applyed in markdown etc.
 NeoBundle 'rust-lang/rust.vim'
 NeoBundleLazy 'racer-rust/vim-racer', {"autoload" : { "filetypes" : [ "rust" ] }}
-"NeoBundle 'racer-rust/vim-racer'
+
+" Haskell
+NeoBundle 'neovimhaskell/haskell-vim'
+NeoBundle 'eagletmt/ghcmod-vim'
+NeoBundle 'eagletmt/neco-ghc'
+NeoBundle 'eagletmt/unite-haddock'
+NeoBundle 'ujihisa/unite-haskellimport'
 
 call neobundle#end()
 
@@ -102,6 +110,13 @@ filetype plugin indent on
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
 NeoBundleCheck
+
+
+"Python3 support when using pyenv
+if executable('pyenv')
+  let g:python_host_prog = expand('$HOME') . '/.pyenv/shims/python'
+  let g:python3_host_prog = expand('$HOME') . '/.pyenv/shims/python3'
+endif
 
 " loading depend on whether nvim or vim
 if has('nvim')

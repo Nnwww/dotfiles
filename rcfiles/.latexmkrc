@@ -5,8 +5,8 @@
 # latexmk -gg -pdf hoge.tex    # use pdflatex
 
 $latex = 'uplatex %O -synctex=1 -interaction=nonstopmode %S';
-# $pdflatex = 'lualatex %O -synctex=1 -interaction=nonstopmode %S';
-$pdflatex = 'xelatex %O -synctex=1 -interaction=nonstopmode %S';
+$pdflatex = 'lualatex %O -synctex=1 -interaction=nonstopmode %S';
+# $pdflatex = 'uplatex %O -synctex=1 -interaction=nonstopmode %S';
 $biber = 'biber %O --bblencoding=utf8 -u -U --output_safechars %B';
 $bibtex = 'upbibtex %O %B';
 $makeindex = 'upmendex %O -o %D %S';

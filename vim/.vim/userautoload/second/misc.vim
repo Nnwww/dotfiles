@@ -34,9 +34,7 @@ map g# <Plug>(incsearch-nohl-g#)
 " The error occurs when merlin is loaded in ftplugin
 if executable('opam')
   let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-  execute "set runtimepath+=" . g:opamshare . "/ocp-index/vim"
   execute "set runtimepath+=" . g:opamshare . "/merlin/vim"
-  let g:syntastic_ocaml_checkers = ['merlin']
 endif
 
 " A setting for coexitence of deoplete with neocomplete

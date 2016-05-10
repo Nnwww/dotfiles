@@ -15,6 +15,7 @@ type nvim >/dev/null 2>&1
 if [ $? = 1 ]; then
 
     type python3 >/dev/null 2>&1
+
     if [ $? = 1 ]; then
         brew install python3
         pip3 install --upgrade pip setuptools
