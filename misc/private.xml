@@ -67,7 +67,7 @@
   <item>
       <name>Leave Insert Mode with EISUU (vim keybind apps)</name>
       <identifier>private.vim_keybind_apps_esc_with_eisuu</identifier>
-      <only>iterm2,TERMINAL,macvim,CLion,intellij,pycharm,Eclipse</only>
+      <only>iterm2,TERMINAL,macvim,gEmacs,CLion,intellij,pycharm,Eclipse</only>
       <autogen>__KeyToKey__ KeyCode::ESCAPE, KeyCode::ESCAPE, KeyCode::JIS_EISUU</autogen>
       <autogen>__KeyToKey__ KeyCode::J, VK_CONTROL, KeyCode::J, VK_CONTROL, KeyCode::JIS_EISUU</autogen>
       <autogen>__KeyToKey__ KeyCode::JIS_BRACKET_LEFT, VK_CONTROL, KeyCode::JIS_BRACKET_LEFT, VK_CONTROL, KeyCode::JIS_EISUU</autogen>

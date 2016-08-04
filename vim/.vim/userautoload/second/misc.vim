@@ -53,6 +53,7 @@ endif
 " Rust specific plugins driven vim-racer
 let s:hooks = neobundle#get_hooks("vim-racer")
 function! s:hooks.on_source(bundle)
+  set hidden
   let g:rustfmt_autosave = 1
   let g:rustfmt_command = expand('~/.cargo/bin/rustfmt')
   let g:racer_cmd = expand('~/.cargo/bin/racer')

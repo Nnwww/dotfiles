@@ -86,6 +86,9 @@ NeoBundleLazy 'kannokanno/previm',  {"autoload" : { "filetypes" : [ "markdown" ]
 NeoBundle 'tpope/vim-speeddating'
 NeoBundle 'jceb/vim-orgmode'
 
+" Python
+NeoBundle 'zchee/deoplete-jedi' " require pip install jedi
+
 " OCaml
 "NeoBundleLazy 'def-lkb/ocp-indent-vim',  {"autoload" : { "filetypes" : [ "ocaml" ] }}
 NeoBundle 'def-lkb/ocp-indent-vim'
@@ -93,7 +96,7 @@ NeoBundle 'def-lkb/ocp-indent-vim'
 " Rust
 " Syntax plugins don't be lazy, because it's not then applyed in markdown etc.
 NeoBundle 'rust-lang/rust.vim'
-NeoBundleLazy 'racer-rust/vim-racer', {"autoload" : { "filetypes" : [ "rust" ] }}
+NeoBundleLazy 'racer-rust/vim-racer' , {"autoload" : { "filetypes" : [ "rust" ] }}
 
 " Haskell
 NeoBundle 'neovimhaskell/haskell-vim'
@@ -114,7 +117,7 @@ NeoBundleCheck
 
 "Python3 support when using pyenv
 if executable('pyenv')
-  let g:python_host_prog = expand('$HOME') . '/.pyenv/shims/python'
+  let g:python_host_prog = expand('$HOME') . '/.pyenv/shims/python2'
   let g:python3_host_prog = expand('$HOME') . '/.pyenv/shims/python3'
 endif
 
