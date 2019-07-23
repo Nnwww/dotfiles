@@ -1,0 +1,9 @@
+/* Hide horizontal tabs at the top of the window */
+#tabbrowser-tabs {
+    visibility: collapse !important;
+}
+
+/* For only Tree Style Tab sidebar */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+    display: none;
+}

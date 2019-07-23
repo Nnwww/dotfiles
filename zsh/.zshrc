@@ -1,65 +1,72 @@
-# pyenv settings
-# Don't write these to zshenv
-export PYENV_ROOT="${HOME}/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
-HISTFILE=~/dotfiles/zsh/.histfile
-
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-
-setopt extendedglob
+setopt appendhistory extendedglob
+setopt share_history # シェルのプロセスごとに履歴を共有
+setopt auto_list # 補完候補が複数ある時に、一覧表示
+setopt auto_menu # 補完候補が複数あるときに自動的に一覧表示する
+setopt hist_ignore_dups # 直前と同じコマンドラインはヒストリに追加しない
+setopt hist_ignore_all_dups # 重複したヒストリは追加しない
 bindkey -e
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '~/dotfiles/zsh/.zshrc'
 
 autoload -Uz compinit
 compinit
 
-# End of lines added by compinstall
-# Manage with zplug
-source ~/.zplug/zplug
-zplug "b4b4r07/zplug"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_COMMAND='rg --color=always --line-number --hidden --glob "!.git"'
 
-zplug "plugins/git",  from:oh-my-zsh
-zplug "themes/sorin", from:oh-my-zsh
+export FZF_COMPLETION_TRIGGER='::'
+# Options to fzf command
+export FZF_COMPLETION_OPTS='+c -x'
 
-# Make sure you use double quotes
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+    fd --hidden --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
+# goenv
+eval "$(goenv init -)"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
+
+# zplug
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
+# Make sure to use double quotes
 zplug "zsh-users/zsh-history-substring-search"
+# Supports oh-my-zsh plugins and the like
+zplug "plugins/git",   from:oh-my-zsh
+# Load if "if" tag returns true
 zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
-# Set priority to load command like a nice command
-# e.g., zsh-syntax-highlighting must be loaded
-# after executing compinit command and sourcing other plugins
-zplug "zsh-users/zsh-syntax-highlighting", nice:10
-
+# auto completions
+zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
 
-# Install plugins if there are plugins that have not been installed
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
-fi
+# 構文のハイライト(https://github.com/zsh-users/zsh-syntax-highlighting)
+zplug "zsh-users/zsh-syntax-highlighting"
 
-# Then, source plugins and add commands to $PATH
-zplug load --verbose
+zplug "b4b4r07/enhancd", use:init.sh
 
-alias nv=nvim
-alias rm=rmtrash
+#theme
+zplug "chrissicool/zsh-256color"
+zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
-if [ -z $TMUX ]; then
-    tmux -2
-fi
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/Users/oiharukawa/.zshrc'
+# 大文字を入力した場合小文字を補完しないが候補が存在しない場合小文字で補完する
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
 
-# OPAM configuration
-. /Users/Oh/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
-
-alias pipu="pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U"
-alias pip2u="pip2 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U"
-alias pip3u="pip3 freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U"
-alias vi='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
-alias vim='env LANG=ja_JP.UTF-8 /Applications/MacVim.app/Contents/MacOS/Vim "$@"'
+zplug load
