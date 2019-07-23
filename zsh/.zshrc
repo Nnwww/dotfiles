@@ -13,6 +13,34 @@ bindkey -e
 autoload -Uz compinit
 compinit
 
+# zplug
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
+# Make sure to use double quotes
+zplug "zsh-users/zsh-history-substring-search"
+# Supports oh-my-zsh plugins and the like
+zplug "plugins/git",   from:oh-my-zsh
+# Load if "if" tag returns true
+zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
+
+# Grab binaries from GitHub Releases
+# and rename with the "rename-to:" tag
+zplug "junegunn/fzf-bin", \
+      from:gh-r, \
+      as:command, \
+      rename-to:fzf, \
+      use:"*darwin*amd64*" \
+      if:"[[ $OSTYPE == *darwin* ]]"
+
+zplug "junegunn/fzf-bin", \
+      from:gh-r, \
+      as:command, \
+      rename-to:fzf, \
+      use:"*linux*amd64*" \
+      if:"[[ $OSTYPE != *darwin* ]]"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --color=always --line-number --hidden --glob "!.git"'
 
@@ -33,23 +61,6 @@ _fzf_compgen_dir() {
     fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-# goenv
-eval "$(goenv init -)"
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
-
-# zplug
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
-
-zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
-# Make sure to use double quotes
-zplug "zsh-users/zsh-history-substring-search"
-# Supports oh-my-zsh plugins and the like
-zplug "plugins/git",   from:oh-my-zsh
-# Load if "if" tag returns true
-zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
-
 # auto completions
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
@@ -65,7 +76,7 @@ zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/Users/oiharukawa/.zshrc'
+zstyle :compinstall filename '$HOME/.zshrc'
 # 大文字を入力した場合小文字を補完しないが候補が存在しない場合小文字で補完する
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
 
