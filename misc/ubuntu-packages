@@ -1,0 +1,27 @@
+# install spacemacs
+
+sudo add-apt-repository ppa:kelleyk/emacs
+sudo apt-get update
+sudo apt-get install emacs26
+
+# install enpass
+sudo -i
+echo "deb https://apt.enpass.io/ stable main" > /etc/apt/sources.list.d/enpass.list
+wget -O - https://apt.enpass.io/keys/enpass-linux.key | apt-key add -
+exit
+
+sudo apt-get -y install curl libcurl3 # for xenial
+apt-get -y update
+apt-get -y install enpass
+sudo apt install libpulse0
+
+# install ripgrep
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/11.0.1/ripgrep_11.0.1_amd64.deb
+sudo dpkg -i ripgrep_11.0.1_amd64.deb
+rm ripgrep_11.0.1_amd64.deb
+
+# install fzf
+# install fd
+
+# install zsh
+sudo apt-get -y install zsh
