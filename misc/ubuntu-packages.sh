@@ -36,3 +36,10 @@ rm bat_0.11.0_amd64.deb
 
 # install zsh
 sudo apt-get -y install zsh
+
+# install onedrive
+# move the path of journal file to onedrive
+
+# install tmux
+sudo apt-get -y install tmux
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
