@@ -10,10 +10,10 @@ export PATH="/usr/local/opt/openssl/bin:$PATH"
 export GOPATH="$HOME/go"
 #enhancd
 export ENHANCD_FILTER=fzy:fzf
-export ENHANCD_HOOK_AFTER_CD="exa -lah"
+export ENHANCD_HOOK_AFTER_CD="exa -lah -s type"
 
 # aliases for convinience
-alias l="exa -lah"
+alias l=${ENHANCD_HOOK_AFTER_CD}
 alias lt="exa -Tlh"
 alias sd="fd --type f --hidden --follow --exclude .git | sk -m --preview 'bat --style=numbers --color=always {}'"
 alias sf="sk -m --ansi -i -c 'rg --color=always --line-number --hidden "{}"' "

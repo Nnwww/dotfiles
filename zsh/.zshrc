@@ -14,7 +14,7 @@ autoload -Uz compinit
 compinit
 
 # zplug
-export ZPLUG_HOME=/usr/local/opt/zplug
+export ZPLUG_HOME=${HOME}/.zplug
 source $ZPLUG_HOME/init.zsh
 
 zplug "mafredri/zsh-async", from:"github", use:"async.zsh"
@@ -27,19 +27,19 @@ zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
 # Grab binaries from GitHub Releases
 # and rename with the "rename-to:" tag
-zplug "junegunn/fzf-bin", \
-      from:gh-r, \
-      as:command, \
-      rename-to:fzf, \
-      use:"*darwin*amd64*" \
-      if:"[[ $OSTYPE == *darwin* ]]"
+#zplug "junegunn/fzf-bin", \
+#      from:gh-r, \
+#      as:command, \
+#      rename-to:fzf, \
+#      use:"*darwin*amd64*" \
+#      if:"[[ $OSTYPE == *darwin* ]]"
 
-zplug "junegunn/fzf-bin", \
-      from:gh-r, \
-      as:command, \
-      rename-to:fzf, \
-      use:"*linux*amd64*" \
-      if:"[[ $OSTYPE != *darwin* ]]"
+#zplug "junegunn/fzf-bin", \
+#      from:gh-r, \
+#      as:command, \
+#      rename-to:fzf, \
+#      use:"*linux*amd64*" \
+#      if:"[[ $OSTYPE != *darwin* ]]"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --color=always --line-number --hidden --glob "!.git"'
@@ -80,4 +80,12 @@ zstyle :compinstall filename '$HOME/.zshrc'
 # 大文字を入力した場合小文字を補完しないが候補が存在しない場合小文字で補完する
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}'
 
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
 zplug load
+(fcitx-autostart > /dev/null 2&>1 &)
