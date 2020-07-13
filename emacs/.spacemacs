@@ -34,7 +34,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
     '(sql
-       systemd
+     systemd
      ansible
      rust
      ruby
@@ -47,7 +47,6 @@ This function should only modify configuration layer settings."
      auto-completion
      spacemacs-modeline
      multiple-cursors
-     treemacs
      git
      version-control
      emacs-lisp
@@ -68,8 +67,8 @@ This function should only modify configuration layer settings."
      dap
      (go :variables
          go-backend 'lsp
-         go-linter 'golangci-lint
-         go-tab-width 2)
+         go-use-golangci-lint t
+         go-tab-width 4)
      (python :variables python-backend 'anaconda)
      yaml
      html
@@ -89,6 +88,7 @@ This function should only modify configuration layer settings."
             c-c++-backend 'lsp-clangd
             )
       (plantuml :variables plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+      unicode-fonts
      )
 
    ;; List of additional packages that will be installed without being
@@ -103,6 +103,11 @@ This function should only modify configuration layer settings."
      highlight-indent-guides
      ;; for clangd
      clang-format
+     ;; posframe
+     (mozc-posframe :location (recipe
+                               :fetcher github
+                               :repo "derui/mozc-posframe"))
+     flycheck-posframe
      )
 
    ;; A list of packages that cannot be updated.
@@ -499,6 +504,10 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  (when (version<= "26.0.50" emacs-version )
+    (global-display-line-numbers-mode))
+
   (evil-define-key 'visual evil-surround-mode-map "s" 'evil-substitute)
   (evil-define-key 'visual evil-surround-mode-map "S" 'evil-surround-region)
   (setq org-journal-file-format "%Y-%m-%d")
@@ -556,7 +565,57 @@ before packages are loaded."
 
   (add-hook 'go-mode-hook 'enable-tabs)
   (add-hook 'dns-mode-hook 'enable-tabs)
+
+  ;; mozc (need emacs-mozc and emacs-mozc-bin)
+  ;;(load-file "${HOME}/workspace/mozc-posframe/mozc-posframe.el")
+  (mozc-posframe-register)
+  (setq mozc-candidate-style 'posframe)
+
+  (setq quail-japanese-use-double-n t)
+  (set-language-environment "Japanese")
+  (setq default-input-method "japanese-mozc")
+  (prefer-coding-system 'utf-8)
+
+  ;; mozcオンでも無変換キーはEmacsにわたすようにキーイベントを横取りする
+  (defadvice mozc-handle-event (around intercept-keys (event))
+    (if (member event (list 'zenkaku-hankaku 'muhenkan))
+        (progn
+          (mozc-clean-up-session)
+          ;; (toggle-input-method)
+          (mozc-mode nil)
+          (deactivate-input-method))
+      (progn ;(message "%s" event) ;debug
+        ad-do-it)))
+  (ad-activate 'mozc-handle-event)
+
+  (defun mozc-start ()
+    (interactive)
+    (message "Mozc start")
+    (mozc-mode 1)
+    (when (null current-input-method) (toggle-input-method)))
+
+  (defun mozc-end ()
+    (interactive)
+    (message "Mozc end")
+    (deactivate-input-method))
+
+  (bind-keys*
+   ("<henkan>" . mozc-start)
+   ("<muhenkan>" . mozc-end)
+   )
+
+  (defun force-ime-off ()
+    (interactive)
+    (when current-input-method
+      (evil-deactivate-input-method)))
+  (add-hook 'evil-hybrid-state-exit-hook 'force-ime-off)
+
+  ;; stop mozc-mode because don't use multiple-cursors with it.
+  (add-hook 'multiple-cursors-mode-hook 'mozc-end)
+  ;; make flycheck be posframe
+  (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode)
   )
+
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -567,9 +626,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-  '(package-selected-packages
-     (quote
-       (sqlup-mode sql-indent utop tuareg caml tide typescript-mode ocp-indent ob-elixir flycheck-ocaml merlin flycheck-mix flycheck-credo dune alchemist elixir-mode yasnippet-snippets yapfify web-mode vterm smeargle shell-pop pytest org-mime org-journal org-download org-bullets org-brain nodejs-repl magit-section lsp-ui lsp-java live-py-mode link-hint impatient-mode highlight-indent-guides helm-themes helm-swoop helm-org helm-ag gnuplot git-messenger git-link flycheck evil-nerd-commenter eshell-prompt-extras dumb-jump doom-modeline docker dap-mode lsp-treemacs treemacs cpp-auto-include company-anaconda company ccls ace-window helm avy yasnippet inf-ruby rust-mode go-mode lua-mode hcl-mode anzu smartparens magit package-lint lsp-mode projectile org-category-capture all-the-icons use-package org-plus-contrib yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-beautify volatile-highlights vmd-mode vi-tilde-fringe vagrant-tramp vagrant uuidgen treemacs-projectile treemacs-persp treemacs-magit treemacs-evil toml-mode toc-org terminal-here tagedit tablist systemd symon symbol-overlay string-inflection spaceline-all-the-icons slim-mode shrink-path seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe restart-emacs rbenv rake rainbow-delimiters racer pyenv-mode py-isort pug-mode prettier-js popwin plantuml-mode pippel pipenv pip-requirements password-generator paradox ox-gfm overseer orgit org-projectile org-present org-pomodoro org-cliplink open-junk-file nginx-mode nameless mvn multi-term move-text mmm-mode minitest meghanada maven-test-mode markdown-toc magit-svn magit-gitflow macrostep lsp-python-ms lorem-ipsum livid-mode json-navigator json-mode js2-refactor js-doc jinja2-mode indent-guide importmagic hybrid-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet groovy-mode groovy-imports gradle-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gmail-message-mode gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-gutter-fringe+ gh-md fuzzy font-lock+ flymd flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z esh-help emojify emoji-cheat-sheet-plus emmet-mode elisp-slime-nav editorconfig edit-server dotenv-mode dockerfile-mode docker-tramp disaster diminish devdocs define-word cython-mode company-ycmd company-web company-terraform company-tern company-rtags company-lua company-go company-emoji company-c-headers company-ansible column-enforce-mode clean-aindent-mode clang-format chruby centered-cursor-mode cargo bundler bui browse-at-remote blacken bind-key auto-yasnippet auto-highlight-symbol auto-compile ansible-doc ansible anaconda-mode aggressive-indent ace-link ace-jump-helm-line ac-ispell))))
+ '(package-selected-packages
+   (quote
+    (flycheck-posframe flycheck-golangci-lint utop tuareg caml tide typescript-mode ocp-indent ob-elixir flycheck-ocaml merlin flycheck-mix flycheck-credo dune alchemist elixir-mode yasnippet-snippets yapfify yaml-mode xterm-color ws-butler writeroom-mode winum which-key web-mode web-beautify vterm volatile-highlights vmd-mode vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toml-mode toc-org terminal-here tagedit systemd symon symbol-overlay string-inflection sql-indent spaceline-all-the-icons smeargle slim-mode shell-pop seeing-is-believing scss-mode sass-mode rvm ruby-tools ruby-test-mode ruby-refactor ruby-hash-syntax rubocopfmt rubocop rspec-mode robe restart-emacs rbenv rake rainbow-delimiters racer pytest pyenv-mode py-isort pug-mode prettier-js posframe popwin plantuml-mode pippel pipenv pip-requirements password-generator paradox ox-gfm overseer orgit org-projectile org-present org-pomodoro org-mime org-journal org-download org-cliplink org-bullets org-brain open-junk-file nodejs-repl nginx-mode nameless mvn multi-term move-text mmm-mode minitest meghanada maven-test-mode markdown-toc magit-svn magit-section magit-gitflow macrostep lsp-ui lsp-python-ms lsp-java lorem-ipsum livid-mode live-py-mode link-hint json-navigator js2-refactor js-doc jinja2-mode indent-guide importmagic impatient-mode hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-rtags helm-pydoc helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-gitignore helm-git-grep helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag groovy-mode groovy-imports gradle-mode google-translate google-c-style golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gmail-message-mode gitignore-templates gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ gh-md fuzzy font-lock+ flymd flycheck-ycmd flycheck-rust flycheck-rtags flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr emojify emoji-cheat-sheet-plus emmet-mode elisp-slime-nav editorconfig edit-server dumb-jump dotenv-mode doom-modeline dockerfile-mode docker disaster diminish devdocs define-word dap-mode cython-mode cpp-auto-include company-ycmd company-web company-terraform company-tern company-rtags company-lua company-go company-emoji company-c-headers company-ansible company-anaconda column-enforce-mode clean-aindent-mode chruby centered-cursor-mode ccls cargo bundler browse-at-remote blacken auto-yasnippet auto-highlight-symbol auto-compile ansible-doc ansible aggressive-indent ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

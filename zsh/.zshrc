@@ -25,22 +25,6 @@ zplug "plugins/git",   from:oh-my-zsh
 # Load if "if" tag returns true
 zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 
-# Grab binaries from GitHub Releases
-# and rename with the "rename-to:" tag
-#zplug "junegunn/fzf-bin", \
-#      from:gh-r, \
-#      as:command, \
-#      rename-to:fzf, \
-#      use:"*darwin*amd64*" \
-#      if:"[[ $OSTYPE == *darwin* ]]"
-
-#zplug "junegunn/fzf-bin", \
-#      from:gh-r, \
-#      as:command, \
-#      rename-to:fzf, \
-#      use:"*linux*amd64*" \
-#      if:"[[ $OSTYPE != *darwin* ]]"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --color=always --line-number --hidden --glob "!.git"'
 
