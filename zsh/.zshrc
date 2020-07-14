@@ -27,13 +27,14 @@ zplug "lib/clipboard", from:oh-my-zsh, if:"[[ $OSTYPE == *darwin* ]]"
 ### From here, config utilities.
 
 # enhancd
-export ENHANCD_FILTER=fzf:fzy
-export ENHANCD_HOOK_AFTER_CD="exa -lah -s type"
+export ENHANCD_FILTER=fzf:sk
+export ENHANCD_HOOK_AFTER_CD="exa -lah -s type --color always"
 # aliases for convinience
 alias l=${ENHANCD_HOOK_AFTER_CD}
 alias lt="exa -Tlh"
-alias sd="sk -m -i -c 'fd --type f --hidden --follow --exclude .git {}' --preview 'bat --style=numbers --color=always {}'"
-alias sf="sk -m --ansi -i -c 'rg --color=always --line-number --hidden "{}"' --preview 'preview-fzf-vim.sh {}'"
+alias sf="sk -m --ansi -i -c 'fd --type f --hidden --follow --color always {}' --preview 'preview-fzf-vim.sh {}'"
+alias sd="sk -m --ansi -i -c 'fd --type d --hidden --follow --color always {}' --preview 'exa -lah -s type --color always {}'"
+alias sft="sk -m --ansi -i -c 'rg --color always --line-number --hidden "{}"' --preview 'preview-fzf-vim.sh {}'"
 alias em="emacsclient -n"
 export FZF_DEFAULT_COMMAND='fd --type d --hidden --follow --exclude ".git" . "$1"'
 
@@ -45,12 +46,12 @@ export FZF_COMPLETION_OPTS='+c -x'
 # - The first argument to the function ($1) is the base path to start traversal
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-    fd --hidden --follow --exclude ".git" . "$1"
+    fd --hidden --follow . "$1"
 }
 
 # Use fd to generate the list for directory completion
 _fzf_compgen_dir() {
-    fd --type d --hidden --follow --exclude ".git" . "$1"
+    fd --type d --hidden --follow . "$1"
 }
 
 # auto completions
