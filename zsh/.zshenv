@@ -17,3 +17,4 @@ alias sd="fd --type f --hidden --follow --exclude .git | sk -m --preview 'bat --
 alias sf="sk -m --ansi -i -c 'rg --color=always --line-number --hidden "{}"' "
 alias em="emacsclient -n"
 alias nv="nvim"
+export PATH="${HOME}/.cargo/bin:$PATH"

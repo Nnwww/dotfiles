@@ -70,7 +70,8 @@ This function should only modify configuration layer settings."
          go-use-golangci-lint t
          go-tab-width 4)
      (python :variables python-backend 'anaconda)
-     yaml
+     (yaml :variables yaml-enable-lsp t)
+     kubernetes
      html
      (java :variables java-backend 'lsp)
      (javascript :variables
