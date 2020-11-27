@@ -5,6 +5,7 @@ export LESS='-g -i -M -R -S -W -z-4 -x4'
 
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
+export PATH="${HOME}/go/bin:$PATH"
 
 #enhancd
 export ENHANCD_FILTER=fzf:fzy

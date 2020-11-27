@@ -87,4 +87,4 @@ zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}=
 # 補完候補一覧をカラー表示
 zstyle ':completion:*' list-colors ''
 
-(fcitx-autostart > /dev/null 2&>1 &)
+(fcitx-autostart > /dev/null 2>&1 &)
