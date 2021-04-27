@@ -515,7 +515,7 @@ before packages are loaded."
   (setq org-journal-file-format "%Y-%m-%d")
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   (add-hook 'yaml-mode-hook 'highlight-indent-guides-mode)
-  (global-git-commit-mode t) ;; use spacemace to edit git commit messages globally with git layer
+  ;;(global-git-commit-mode t) ;; use spacemace to edit git commit messages globally with git layer
   (setq magit-repository-directories '(("~/workspace/" . 1))) ;;
 
   (with-eval-after-load "persp-mode-autoloads" ;; Enable ~SPC l x~ to also kill buffers when do layouts.
@@ -620,6 +620,9 @@ before packages are loaded."
   (add-hook 'multiple-cursors-mode-hook 'mozc-end)
   ;; make flycheck be posframe
   (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode)
+
+  ;;
+  (modify-syntax-entry ?_ "w")
   )
 
 (defun dotspacemacs/emacs-custom-settings ()
