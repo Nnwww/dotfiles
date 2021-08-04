@@ -92,6 +92,7 @@ This function should only modify configuration layer settings."
             c-c++-backend 'lsp-clangd
             )
       (plantuml :variables plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+     evil-better-jumper
      )
 
    ;; List of additional packages that will be installed without being
@@ -284,7 +285,7 @@ It should only modify the values of Spacemacs settings."
    ;; and TAB or `C-m' and `RET'.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
-   dotspacemacs-distinguish-gui-tab nil
+   dotspacemacs-distinguish-gui-tab t
 
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
