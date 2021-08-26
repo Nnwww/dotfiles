@@ -59,6 +59,7 @@ This function should only modify configuration layer settings."
      (org :variables
           org-enable-org-journal-support t
           org-enable-github-support t)
+     (shell-scripts :variables shell-scripts-format-on-save t)
      (shell :variables
             shell-default-shell 'vterm
             shell-default-position 'right
@@ -624,6 +625,9 @@ before packages are loaded."
 
   ;;
   (modify-syntax-entry ?_ "w")
+
+  ;; If non-nil use the latest commit's hash in the link instead of the branch name
+  (setq git-link-use-commit t)
   )
 
 (defun dotspacemacs/emacs-custom-settings ()
