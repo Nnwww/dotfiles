@@ -64,6 +64,5 @@ endfunction
 autocmd BufWritePre * call <SID>remove_dust()
 
 " 全角スペース表示
-Autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGray guibg=DarkGray
-Autocmd VimEnter,WinEnter * match IdeographicSpace /　/
+
 
